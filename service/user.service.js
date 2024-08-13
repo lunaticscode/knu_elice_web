@@ -16,12 +16,13 @@ const getUser = async (email, password) => {
 const getUserByEmail = async (email) => {
   try {
     const user = await User.findOne({ email });
+    console.log(user);
     return user;
   } catch (err) {
-    conosle.log("error", err);
-    throw new Error(err);
+    return null;
   }
 };
+
 module.exports = {
   createUser,
   getUserByEmail,
