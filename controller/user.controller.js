@@ -1,6 +1,13 @@
 const bcrypt = require("bcryptjs");
 const { createUser } = require("../service/user.service");
 const userController = require("express").Router();
+
+userController.post("/signin", async (req, res) => {
+  const { email, password } = req.body;
+
+  const isValidPassword = bcrypt.compareSync(password);
+});
+
 userController.post("/", async (req, res) => {
   const { email, password, nickname } = req.body;
   console.log(req.body);
