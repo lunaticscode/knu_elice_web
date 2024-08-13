@@ -1,11 +1,20 @@
 const bcrypt = require("bcryptjs");
-const { createUser } = require("../service/user.service");
+const jwt = require("jsonwebtoken");
+const { createUser, getUserByEmail } = require("../service/user.service");
 const userController = require("express").Router();
 
 userController.post("/signin", async (req, res) => {
   const { email, password } = req.body;
-
-  const isValidPassword = bcrypt.compareSync(password);
+  const user = await getUserByEmail(email);
+  console.log(user);
+  const isValidPassword = bcrypt.compareSync(password, user.password);
+  console.log(isValidPassword);
+  if (isValidPassword) {
+    const { password, ...userData } = user;
+    const token = jwt.sign(userData, "jwt-secret");
+    return res.json({ result: true, token });
+  } else {
+  }
 });
 
 userController.post("/", async (req, res) => {
